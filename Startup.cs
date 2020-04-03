@@ -28,6 +28,7 @@ namespace AspNetCoreTodo
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -35,7 +36,7 @@ namespace AspNetCoreTodo
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddMvc();
 
             services.AddScoped<ITodoItemService, TodoItemService>();
